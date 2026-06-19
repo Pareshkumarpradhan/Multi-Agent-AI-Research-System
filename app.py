@@ -10,8 +10,37 @@ in real time (Search -> Read -> Write -> Critic), then displays the final
 report and the critic's score in a clean, shareable layout.
 """
 
+import os
 import streamlit as st
+
+# ============================================================
+# SECRET MANAGEMENT
+# Works in BOTH environments without code changes:
+#   - Local:           keys come from the git-ignored .env file (via dotenv)
+#   - Streamlit Cloud: keys come from st.secrets (set in the app's Secrets UI)
+# We copy any st.secrets into os.environ *before* importing the pipeline,
+# because agents.py / tools.py read their keys with os.getenv() at import time.
+# ============================================================
+try:
+    for _key, _val in st.secrets.items():
+        os.environ.setdefault(_key, str(_val))
+except Exception:
+    # No secrets.toml present (e.g. running locally) -> fall back to .env
+    pass
+
 from pipeline import run_research_pipeline
+
+# Fail fast with a clear message if required keys are missing
+_REQUIRED_KEYS = ["MISTRAL_API_KEY", "TAVILY_API_KEY"]
+_missing = [k for k in _REQUIRED_KEYS if not os.getenv(k)]
+if _missing:
+    st.error(
+        "Missing required API key(s): "
+        + ", ".join(_missing)
+        + ".\n\nSet them locally in a `.env` file, or on Streamlit Cloud "
+        "under **Settings → Secrets**."
+    )
+    st.stop()
 
 # ============================================================
 # PAGE CONFIG
