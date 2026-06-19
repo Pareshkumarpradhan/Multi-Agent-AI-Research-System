@@ -1,0 +1,42 @@
+# Core LangChain
+langchain
+langchain-core
+langchain-community
+
+# LangGraph
+langgraph
+
+# Mistral AI
+langchain-mistralai
+
+# Google GenAI
+langchain-google-genai
+
+# Tavily Search
+tavily-python
+
+# Web Scraping
+beautifulsoup4
+requests
+lxml
+
+# Environment Variables
+python-dotenv
+
+# Token Counting (Optional but useful)
+tiktoken
+
+# Data Validation
+pydantic
+
+# Async HTTP Requests (Optional)
+httpx
+
+# Logging & CLI Output (Optional)
+rich
+
+# Web UI
+streamlit
+
+# Utility
+typing-extensions
